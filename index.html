@@ -51,6 +51,24 @@
 				shape-rendering: crispEdges;
 			}
 
+			.reveal table {
+			  margin: auto;
+			  border-collapse: collapse;
+			  border-spacing: 0;
+			}
+
+			.reveal table th {
+			  font-weight: bold;
+			}
+
+			.reveal table th,
+			.reveal table td {
+			  text-align: left;
+			  padding: 0.2em 0.5em 0.2em 0.5em;
+			  border-bottom: 1px solid;
+			}
+
+
 		</style>
 
 		<!-- Printing and PDF exports -->
@@ -63,6 +81,20 @@
 		</script>
 	</head>
 	<body>
+
+		<script src="lib/data/d3.min.js"></script>
+		<script src="lib/data/jquery.min.js"></script>
+
+		<script src="lib/data/papaparse.min.js"></script>
+		<script src="lib/vis/timeseries.js"></script>
+		<script src="lib/vis/oecd.js"></script>
+		<script src="lib/vis/lineplot.js"></script>
+		<script src="lib/vis/ui_utils.js"></script>
+		<script src="lib/vis/cabon.js"></script>
+		<script src="lib/vis/dow.js"></script>
+		<script src="lib/vis/stripes.js"></script>
+		<script src="lib/vis/helper.js"></script>
+
 		<div class="reveal">
 			<div class="slides">
 				
@@ -81,7 +113,8 @@
 
 				<section>
 					<h2>Khairi Reda</h2>
-					<a href="http://vis.ninja/">http://vis.ninja</a><br>
+					<!--<a href="http://vis.ninja/">http://vis.ninja</a><br>-->
+					<a href="mailto:redak@iu.edu">redak@iu.edu</a><br>
 					<a href="http://twitter.com/RedKhair">@RedKhair</a>
 				</section>
 
@@ -302,6 +335,7 @@
 						<h4 style="text-align: left">Visual representations<br>for time series</h4>
 						<ul>
 							<li class="fragment">Line charts</li>
+							<li class="fragment">Stripe glyphs</li>
 							<li class="fragment">Star glyphs and radial layouts</li>
 							<li class="fragment">Interactive techniques</li>
 							<li class="fragment">Scatterplots</li>
@@ -320,7 +354,7 @@
 				</section>
 
 				<section>
-					<div style="text-align: left">
+					<div style="">
 						<svg id="linechartOECD" width="1100" height="500"></svg><br>
 						Gross Domestic Product (USD per capita)
 					</div>
@@ -328,9 +362,7 @@
 				</section>
 
 				<section>
-					<div>
-						<svg id="oecdSmallMultiples" width="1800" height="1000"></svg>
-					</div>
+					<svg id="oecdSmallMultiples" width="1800" height="1000"></svg>
 				</section>
 
 				<section>
@@ -340,7 +372,7 @@
 					</div>
 					<div class="fragment" style="text-align: left">
 							Atmospheric Carbon Dioxide
-							<svg id="linechartCarbon" width="1200" height="600"></svg><br>
+							<svg id="linechartCarbon" width="1350" height="700"></svg><br>
 					</div>
 					<div class="fragment">
 
@@ -348,20 +380,77 @@
 
 				</section>
 
+				<!-- stripes -->
+				<section>
+					<h2>Stripe chart</h2>
+					Encode time series value with color as opposed to position
+
+					<div style="text-align: center">
+						<div text>
+							<p>&nbsp;<p>&nbsp;
+							<div style="text-align: center">
+								Dow Jones index<br>
+								<svg id="linechartDow" width="1000" height="200"></svg><br>
+							</div>
+						</div>
+						<div>
+							<canvas class="fragment" id="canvasDow1" width="1000" height="70" style="border: solid 1px white; background-color: white"></canvas><br>
+							<canvas class="fragment" id="canvasDow2" width="1000" height="70" style="border: solid 1px white; background-color: white"></canvas><br>
+							<canvas class="fragment" id="canvasDow3" width="1000" height="70" style="border: solid 1px white; background-color: white"></canvas><br>
+							<canvas class="fragment" id="canvasDow4" width="1000" height="70" style="border: solid 1px white; background-color: white"></canvas><br>
+							<canvas class="fragment" id="canvasDow5" width="1000" height="70" style="border: solid 1px white; background-color: white"></canvas><br>
+							<canvas class="fragment" id="canvasDow6" width="1000" height="70" style="border: solid 1px white; background-color: white"></canvas><br>
+
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>Stripe chart</h2>
+					High frequency noise
+
+					<div style="text-align: center">
+						<div classs="fragment">
+							<p>&nbsp;<p>&nbsp;
+							<svg id="linechartCosine" width="1200" height="130"></svg><br>
+						</div>
+						<div>
+							<canvas class="fragment" id="canvasCosine" width="1200" height="100" style="border: solid 1px white; background-color: white"></canvas><br>
+						</div>
+					</div>
+
+					<script type='text/javascript'>
+						
+							var showNoise = true;
+							var preNoiseSeries = new Timeseries(3000).zero().cosineWave(10, 500, 0).cosineWave(26, 2000, 200).cosineWave(5, 900, 100).cosineWave(15, 200, 50);
+							var noisedSeries = preNoiseSeries.clone().noise([0, 70])
+							var cosinePlot = visLinePlot('linechartCosine', noisedSeries, { yAxis: false, xAxis: false, stroke_width: 2, padW: 0 });
+							
+							var canvas2 = d3.select('#canvasCosine');
+							new StripesPlot(canvas2, +canvas2.attr('width'), +canvas2.attr('height'), noisedSeries.clone().smooth(7));
+						
+							d3.select("#linechartCosine").on('dblclick', function() 
+							{					
+								showNoise = !showNoise;
+								var timeseries = showNoise ? noisedSeries : preNoiseSeries;
+								cosinePlot.updateTimeseries(0, timeseries);
+								new StripesPlot(canvas2, +canvas2.attr('width'), +canvas2.attr('height'), showNoise ? timeseries.clone().smooth(7) : timeseries);
+							});
+					</script>
+				</section>
+
+
+				<section>
+					<h2>Horizon chart</h2>
+					<svg width="800" height="200"></svg>
+
+				</section>
 			</div>
 		</div>
-
+		
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
-		<script src="lib/data/d3.min.js"></script>
-		<script src="lib/data/jquery.min.js"></script>
 
-		<script src="lib/data/papaparse.min.js"></script>
-		<script src="lib/vis/timeseries.js"></script>
-		<script src="lib/vis/oecd.js"></script>
-		<script src="lib/vis/lineplot.js"></script>
-		<script src="lib/vis/ui_utils.js"></script>
-		<script src="lib/vis/cabon.js"></script>
 
 		<script>
 			// More info https://github.com/hakimel/reveal.js#configuration
@@ -392,8 +481,8 @@
 				{ country: "DEU", color: '#ffcc66', label: 'Germany'},
 				{ country: 'FRA', color: '#ffb3ff', label: 'France' },
 				{ country: 'AUS', color: '#ff8000', label: 'Australia' },
-				{ country: 'CAN', color: '#99ffcc', label: 'Canada'},
-				{ country: 'GRC', color: '#ff3333', label: 'Greece'},
+				{ country: 'CAN', color: '#ff3333', label: 'Canada'},
+				{ country: 'GRC', color: '#99ffcc', label: 'Greece'},
 				{ country: 'HUN', color: '#ffffcc', label: 'Hungary'},
 				{ country: 'IRL', color: '#99ff99', label: 'Ireland'},
 				{ country: 'JPN', color: '#ffffff', label: 'Japan'},
@@ -420,11 +509,12 @@
 
 				d3.select('body').on("keydown", function() {
 					
+					var keyCode = d3.event.keyCode;
+
 					switch (Reveal.getIndices().h)
 					{ 
 					case 7:
 					
-						var keyCode = d3.event.keyCode;
 						if (keyCode == 65) {
 							if (OECD_INDEX < OECD_PLOTS.length) 
 							{
@@ -440,8 +530,15 @@
 							}
 						}
 						break;
-					
+
 					case 8:
+						if (keyCode == 89)
+						{
+							flipOECDYRange();
+						}
+						break;
+
+					case 9:
 						switch(d3.event.keyCode)
 						{
 						case 65:
@@ -456,11 +553,24 @@
 							}
 							break;
 						}
+					
+					case 10:
+						// Dow smooth
+						switch (d3.event.keyCode)
+						{
+						case 65:
+							changeDowSmooth(1);
+							break;
+						case 68:
+							changeDowSmooth(-1);
+							break;
+						}
 					}
 				})
 			});
 
 			// small multiples OECD
+			var oecdSmallMultiples = [], oecdGlobalScale = true, oecdYRange = null;
 			function makeOECDSmallMultiples()
 			{
 				var svg = d3.select("#oecdSmallMultiples");
@@ -474,13 +584,55 @@
 					.each(function(d, i) 
 					{
 						var g = d3.select(this);
-						var plot = new LinePlot(g, w/4-30, h/4-5, {resizable: false, xAxis: false});
+						var plot = new LinePlot(g, w/4-30, h/4-5, {
+							resizable: false, 
+							xAxis: false, 
+							hoverCallback: function(timestep, initiator) 
+							{
+								for (var i=0, N=oecdSmallMultiples.length; i<N; i++) {
+									var plot = oecdSmallMultiples[i];
+									if (plot != initiator) {
+										plot.showHoverBalls(timestep);
+									}
+								}
+							} 
+						});
+						oecdSmallMultiples.push(plot);
+
 						var timeseries = oecd.getLocationTimeseries(d.country, 'GDP');
 						plot.addTimeseries(timeseries, d.label, d.color);
 						plot.setDateRange([oecd.getStartYear() + '-1-1', oecd.getEndYear() + '-1-1']);
 
 					})
+				
+				oecdYRange = [Number.MAX_VALUE, -Number.MAX_VALUE];
+				for (var i=0, N=oecdSmallMultiples.length; i<N; i++) 
+				{
+					var plot = oecdSmallMultiples[i];
+					var yRange = plot.getYRange(plot);
 
+					oecdYRange[0] = Math.min(oecdYRange[0], yRange[0]);
+					oecdYRange[1] = Math.max(oecdYRange[1], yRange[1]);
+				}
+				
+				if (oecdGlobalScale)
+				{
+					for (var i=0, N=oecdSmallMultiples.length; i<N; i++) 
+					{
+						var plot = oecdSmallMultiples[i];
+						plot.setYRange( oecdYRange );
+					}
+				}
+			}
+
+			function flipOECDYRange() 
+			{
+				oecdGlobalScale = !oecdGlobalScale;
+				for (var i=0, N=oecdSmallMultiples.length; i<N; i++) 
+				{
+					var plot = oecdSmallMultiples[i];
+					plot.setYRange( oecdGlobalScale ? oecdYRange : undefined );
+				}
 			}
 
 			// ====================================
@@ -493,7 +645,7 @@
 				var w = 550 - 20;
 				var h = +svg.attr('height')-20;
 
-				carbonPlot = new LinePlot(svg, w, h, {stroke_width: 2, interpolate: 'linear'});
+				carbonPlot = new LinePlot(svg, w, h, {stroke_width: 3, interpolate: 'linear'});
 				carbonPlot.addTimeseries(carbonTimeseries, null, '#80d4ff');
 				carbonPlot.setDateRange([carbon.getStartTime(), carbon.getEndTime()]);
 				carbonPlot.setResizeCallback(updateChartInfo);
@@ -512,6 +664,59 @@
 						.html("Average line segment orientation: " + avgAngle.toFixed(1) + ', Aspect ratio: ' + aspectRatio.toFixed(1));
 				}
 			});
+
+			// ===========================================
+			// Dow Jones industrial
+			var dowTimeseries = null, dowTimeseriesSmoothed = null, dowPlot;
+			var dowSmooth = 3;
+
+			var dow = new DowData('data/dow.csv', function(dow) 
+			{
+				dowTimeseries = dow.getTimeseries();
+				var svg = d3.select("#linechartDow");
+				var w = +svg.attr('width');
+				var h = +svg.attr('height');
+				dowPlot = new LinePlot(svg, w, h, {
+					yAxis: false, xAxis: true, stroke_width: 2, interpolate: 'linear', padW: 0,
+					hoverCallback: function() {}, hoverCircleR: 8
+
+				});
+				dowPlot.setDateRange([dow.getStartTime(), dow.getEndTime()]);
+
+				changeDowSmooth(0);
+			});
+
+			function changeDowSmooth(delta) {
+				dowSmooth += delta*6;
+				if (dowSmooth < 1) {
+					dowSmooth = 1;
+				}
+				dowTimeseriesSmoothed = dowTimeseries.clone();
+				if (dowSmooth > 1) {
+					dowTimeseriesSmoothed.smooth(dowSmooth);
+				}
+				drawDowCharts();
+			}
+
+			function drawDowCharts()
+			{
+				dowPlot.popTimeseries();
+				dowPlot.addTimeseries(dowTimeseriesSmoothed, null, '#80d4ff');
+
+				var STRIPE_CHARTS = [
+					{ canvas: 'canvasDow1', colorScale: STRIPE_COLOR_SCALE0},
+					{ canvas: 'canvasDow2', colorScale: STRIPE_COLOR_SCALE1},
+					{ canvas: 'canvasDow3', colorScale: STRIPE_COLOR_SCALE3},
+					{ canvas: 'canvasDow4', colorScale: STRIPE_COLOR_SCALE4},
+					{ canvas: 'canvasDow5', colorScale: STRIPE_COLOR_SCALE5},
+					{ canvas: 'canvasDow6', colorScale: STRIPE_COLOR_SCALE6},
+				];
+
+				for (var i=0; i < STRIPE_CHARTS.length; i++) {
+					canvas = d3.select('#' + STRIPE_CHARTS[i].canvas);
+					new StripesPlot(canvas, +canvas.attr('width'), +canvas.attr('height'), dowTimeseriesSmoothed, STRIPE_CHARTS[i].colorScale);
+				}
+			}				
 		</script>
 	</body>
 </html>
