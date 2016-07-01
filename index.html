@@ -1,0 +1,517 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Visualizing Time Series</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<style>
+			body {
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				cursor: default;
+			}
+
+			td { border-bottom: solid 2px white; font-family: "Monaco", "Lucida Console", monospace;}
+			td.centerCell {border-left: solid 2px white; border-bottom: solid 2px white; font-family: "Monaco", "Lucida Console", monospace;}
+			
+			/* anscomb's quatret */
+			div.anscomb {display: inline-block; margin-left: 40px; width: 130px;}
+
+			/* colors */
+			.blue { color: rgb(66, 175, 250); }
+			.red  { color: rgb(255, 153, 153);}
+			
+			text {
+				cursor: default;
+				-webkit-touch-callout: none;
+				-webkit-user-select: none;
+				-khtml-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			
+			.axis text { fill: white; font-family: 'Source Sans Pro', Helvetica; font-size: 14pt;}
+			.axis line,
+			.axis path {
+				fill: none;
+				stroke: white;
+				shape-rendering: crispEdges;
+			}
+
+		</style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				
+				<!-- intro slide -->
+				<section data-background-image="img/pianoStrings.png">
+					<div style="background-color: rgba(0,0,0,0.4); width: 600px; text-align: left">
+						<h1>Visualizing<br>Time Series</h1>
+						<!--
+						<p>&nbsp;
+						<p>
+							Khairi Reda<br>
+							Leadership Computing Facility
+						-->
+					</div>
+				</section>
+
+				<section>
+					<h2>Khairi Reda</h2>
+					<a href="http://vis.ninja/">http://vis.ninja</a><br>
+					<a href="http://twitter.com/RedKhair">@RedKhair</a>
+				</section>
+
+				<!-- why need vis: anscombe's quatret -->
+				<section id="fragments">
+					<div style="font-size: 15pt" class="fragment">
+						<div class="anscomb">
+								&nbsp;
+						</div>
+						<div class="anscomb">
+							<h3>set A</h3>
+							<table cellspacing="0">
+								<tr>
+									<td style="text-align: center">x</td>
+									<td style="text-align: center">y</td>
+								</tr>
+									<tr><td>	10</td> <td class="centerCell">	8.04</td></tr>
+									<tr><td>	8</td>	<td class="centerCell">	6.95</td></tr>
+									<tr><td>	13</td>	<td class="centerCell">	7.58</td></tr>
+									<tr><td>	9</td>	<td class="centerCell">	8.81</td></tr>
+									<tr><td>	11</td>	<td class="centerCell">	8.33</td></tr>
+									<tr><td>	14</td>	<td class="centerCell">	9.96</td></tr>
+									<tr><td>	6</td>	<td class="centerCell">	7.24</td></tr>
+									<tr><td>	4</td>	<td class="centerCell">	4.26</td></tr>
+									<tr><td>	12</td>	<td class="centerCell">	10.84</td></tr>
+									<tr><td>	7</td>	<td class="centerCell">	4.82</td></tr>
+									<tr><td>	5</td>	<td class="centerCell">	5.68</td></tr>
+							</table>
+						</div>
+
+						<div class="anscomb">
+							<h3>set B</h3>
+							<table cellspacing="0">
+								<tr>
+									<td style="text-align: center">x</td>
+									<td style="text-align: center">y</td>
+								</tr>
+								<tr><td>10	</td><td class="centerCell">	9.14</td></tr>
+								<tr><td>8		</td><td class="centerCell">8.14</td></tr>
+								<tr><td>13	</td><td class="centerCell">	8.74</td></tr>
+								<tr><td>9		</td><td class="centerCell">8.77</td></tr>
+								<tr><td>11	</td><td class="centerCell">	9.26</td></tr>
+								<tr><td>14	</td><td class="centerCell">	8.1</td></tr>
+								<tr><td>6		</td><td class="centerCell">6.13</td></tr><tr>
+								<td>4	</td><td class="centerCell">	3.1</td></tr>
+								<tr><td>12	</td><td class="centerCell">	9.13</td></tr>
+								<tr><td>7		</td><td class="centerCell">7.26</td></tr>
+								<tr><td>5		</td><td class="centerCell">4.74</td></tr>
+							</table>
+						</div>
+
+						<div class="anscomb">
+							<h3>set C</h3>
+							<table cellspacing="0">
+								<tr>
+									<td style="text-align: center">x</td>
+									<td style="text-align: center">y</td>
+								</tr>
+								<tr><td>10	</td><td class="centerCell">		7.46</td></tr>
+								<tr><td>8		</td><td class="centerCell">	6.77</td></tr>
+								<tr><td>13	</td><td class="centerCell">		12.74</td></tr>
+								<tr><td>9		</td><td class="centerCell">	7.11</td></tr>
+								<tr><td>11	</td><td class="centerCell">		7.81</td></tr>
+								<tr><td>14	</td><td class="centerCell">		8.84</td></tr>
+								<tr><td>6		</td><td class="centerCell">	6.08</td></tr>
+								<tr><td>4		</td><td class="centerCell">	5.39</td></tr>
+								<tr><td>12	</td><td class="centerCell">		8.15</td></tr>
+								<tr><td>7		</td><td class="centerCell">	6.42</td></tr>
+								<tr><td>5		</td><td class="centerCell">	5.73</td></tr>
+							</table>
+						</div>
+						
+						<div class="anscomb">
+							<h3>set D</h3>
+							<table cellspacing="0">
+								<tr>
+									<td style="text-align: center">x</td>
+									<td style="text-align: center">y</td>
+								</tr>
+
+								<tr><td>8		</td><td class="centerCell">	6.58</td></tr>
+								<tr><td>8		</td><td class="centerCell">	5.76</td></tr>
+								<tr><td>8		</td><td class="centerCell">	7.71</td></tr>
+								<tr><td>8		</td><td class="centerCell">	8.84</td></tr>
+								<tr><td>8		</td><td class="centerCell">	8.47</td></tr>
+								<tr><td>8		</td><td class="centerCell">	7.04</td></tr>
+								<tr><td>8		</td><td class="centerCell">	5.25</td></tr>
+								<tr><td>19	</td><td class="centerCell">		12.5</td></tr>
+								<tr><td>8		</td><td class="centerCell">	5.56</td></tr>
+								<tr><td>8		</td><td class="centerCell">	7.91</td></tr>
+								<tr><td>8		</td><td class="centerCell">	6.89</td></tr>
+							</table>
+						</div>
+					</div>
+
+					<div class="fragment">
+						<div class="anscomb" style="text-align: left">
+							mean
+						</div>
+
+						<div class="anscomb">
+							<div class="blue" style="font-size: 20pt">9.00 | 7.50</div>
+						</div>
+
+						<div class="anscomb">
+							<span class="blue" style="font-size: 20pt">9.00 | 7.50</span>
+						</div>
+						
+						<div class="anscomb">
+							<span class="blue" style="font-size: 20pt">9.00 | 7.50</span>
+						</div>
+						
+						<div class="anscomb">
+							<span class="blue" style="font-size: 20pt">9.00 | 7.50</span>
+						</div>
+						
+					</div>
+
+					<div class="fragment">
+						<div class="anscomb" style="text-align: left">
+							variance
+						</div>
+
+						<div class="anscomb">
+							<div class="blue" style="font-size: 20pt">11.00 | 4.12</div>
+						</div>
+
+						<div class="anscomb">
+							<span class="blue" style="font-size: 20pt">11.00 | 4.12</span>
+						</div>
+						
+						<div class="anscomb">
+							<span class="blue" style="font-size: 20pt">11.00 | 4.12</span>
+						</div>
+						
+						<div class="anscomb">
+							<span class="blue" style="font-size: 20pt">11.00 | 4.12</span>
+						</div>
+						
+					</div>
+
+					<div class="fragment">
+						<div class="anscomb" style="text-align: left">
+							correlation
+						</div>
+
+						<div class="anscomb">
+							<div class="blue" style="font-size: 20pt">0.816</div>
+						</div>
+
+						<div class="anscomb">
+							<span class="blue" style="font-size: 20pt">0.816</span>
+						</div>
+						
+						<div class="anscomb">
+							<span class="blue" style="font-size: 20pt">0.816</span>
+						</div>
+						
+						<div class="anscomb">
+							<span class="blue" style="font-size: 20pt">0.816</span>
+						</div>
+						
+					</div>
+
+					<div class="fragment">
+						<div class="anscomb" style="text-align: left">
+							regression
+						</div>
+
+						<div class="anscomb">
+							<div class="red" style="font-size: 20pt">Y = .5X + 3</div>
+						</div>
+
+						<div class="anscomb">
+							<span class="red" style="font-size: 20pt">Y = .5X + 3</span>
+						</div>
+						
+						<div class="anscomb">
+							<span class="red" style="font-size: 20pt">Y = .5X + 3</span>
+						</div>
+						
+						<div class="anscomb">
+							<span class="red" style="font-size: 20pt">Y = .5X + 3</span>
+						</div>
+					</div>
+
+					<div class="fragment">
+						<div class="anscomb" style="text-align: left">
+							R<sup><font size="-1">2</font></sup>
+						</div>
+
+						<div class="anscomb">
+							<div class="red" style="font-size: 20pt">0.66</div>
+						</div>
+
+						<div class="anscomb">
+							<span class="red" style="font-size: 20pt">0.66</span>
+						</div>
+						
+						<div class="anscomb">
+							<span class="red" style="font-size: 20pt">0.66</span>
+						</div>
+						
+						<div class="anscomb">
+							<span class="red" style="font-size: 20pt">0.66</span>
+						</div>
+					</div>
+				</section>
+
+				<!-- picture of anscomb's quatret -->
+				<section data-background-color="white">
+					<img data-src="img/anscomb.png" style="background:none; border:none; box-shadow:none;">
+				</section>
+
+				<!-- visualizing times series -->
+				<section>
+					<div>
+						<h4 style="text-align: left">Visual representations<br>for time series</h4>
+						<ul>
+							<li class="fragment">Line charts</li>
+							<li class="fragment">Star glyphs and radial layouts</li>
+							<li class="fragment">Interactive techniques</li>
+							<li class="fragment">Scatterplots</li>
+						</ul>
+
+					</div>
+				</section>
+ 
+				<!-- line charts -->
+				<section>
+					<h2>Line charts</h2>
+				</section>
+
+				<section data-background-color="white">
+					<img data-src="img/Playfair_Timeseries.png" style="background:none; border:none; box-shadow:none;">
+				</section>
+
+				<section>
+					<div style="text-align: left">
+						<svg id="linechartOECD" width="1100" height="500"></svg><br>
+						Gross Domestic Product (USD per capita)
+					</div>
+
+				</section>
+
+				<section>
+					<div>
+						<svg id="oecdSmallMultiples" width="1800" height="1000"></svg>
+					</div>
+				</section>
+
+				<section>
+					<div style="text-align: left">
+						<h3>Aspect ratio matters</h3>
+						The average absolute orientation of line segments should be close to 45&#176;
+					</div>
+					<div class="fragment" style="text-align: left">
+							Atmospheric Carbon Dioxide
+							<svg id="linechartCarbon" width="1200" height="600"></svg><br>
+					</div>
+					<div class="fragment">
+
+					</div>
+
+				</section>
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+		<script src="lib/data/d3.min.js"></script>
+		<script src="lib/data/jquery.min.js"></script>
+
+		<script src="lib/data/papaparse.min.js"></script>
+		<script src="lib/vis/timeseries.js"></script>
+		<script src="lib/vis/oecd.js"></script>
+		<script src="lib/vis/lineplot.js"></script>
+		<script src="lib/vis/ui_utils.js"></script>
+		<script src="lib/vis/cabon.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+			    width: 1600,
+			    height: 1200,
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+
+		<script type="text/javascript">
+
+			// load OCED data
+			var svg = d3.select("#linechartOECD");
+			var w = +svg.attr("width")-40;
+			var h = +svg.attr('height');
+			var plot = new LinePlot(svg, w, h);
+			var OECD_PLOTS = [
+				{ country: "USA", color: '#80d4ff', label: 'US' },
+				{ country: "GBR", color: '#ff9999', label: 'UK' },
+				{ country: "DEU", color: '#ffcc66', label: 'Germany'},
+				{ country: 'FRA', color: '#ffb3ff', label: 'France' },
+				{ country: 'AUS', color: '#ff8000', label: 'Australia' },
+				{ country: 'CAN', color: '#99ffcc', label: 'Canada'},
+				{ country: 'GRC', color: '#ff3333', label: 'Greece'},
+				{ country: 'HUN', color: '#ffffcc', label: 'Hungary'},
+				{ country: 'IRL', color: '#99ff99', label: 'Ireland'},
+				{ country: 'JPN', color: '#ffffff', label: 'Japan'},
+				{ country: 'LUX', color: '#3399ff', label: 'Luxembourg'},
+				{ country: 'MEX', color:  '#4dffb8', label: 'Mexico' },
+				{ country: 'NLD', color: '#d580ff', label: 'Netherland'},
+				{ country: 'TUR', color: '#ff3333', label: 'Turkey'},
+				{ country: 'NOR', color: '#ffff00', label: 'Norway'},
+				{ country: 'SAU', color: '#00ff00', label: 'Saudi Arabia'}
+
+			];
+			var OECD_INDEX = 1;
+			var oecd = new OECDData('data/DP_LIVE_28062016231151406.csv', function(oecd) 
+			{
+				// add the US
+				var USA = oecd.getLocationTimeseries('USA', 'GDP');
+				plot.addTimeseries(USA, "US", '#80d4ff');
+
+				// update date range
+				plot.setDateRange([oecd.getStartYear() + '-1-1', oecd.getEndYear() + '-1-1']);
+
+				// small multiples
+				makeOECDSmallMultiples();
+
+				d3.select('body').on("keydown", function() {
+					
+					switch (Reveal.getIndices().h)
+					{ 
+					case 7:
+					
+						var keyCode = d3.event.keyCode;
+						if (keyCode == 65) {
+							if (OECD_INDEX < OECD_PLOTS.length) 
+							{
+								var i = OECD_INDEX;
+								var ts = oecd.getLocationTimeseries(OECD_PLOTS[i].country, 'GDP');
+								plot.addTimeseries(ts, OECD_PLOTS[i].label, OECD_PLOTS[i].color);
+								OECD_INDEX++;
+							}
+						} else if (keyCode == 68) {
+							plot.popTimeseries();
+							if (OECD_INDEX > 0) {
+								OECD_INDEX--;
+							}
+						}
+						break;
+					
+					case 8:
+						switch(d3.event.keyCode)
+						{
+						case 65:
+							// A
+							if (carbonPlot.getSeriesCount() < 2) {
+								carbonPlot.addTimeseries(carbonTimeseries.clone().smooth(365, true), null, '#ff9999');
+							}
+							break;
+						case 68:
+							if (carbonPlot.getSeriesCount() > 1) {
+								carbonPlot.popTimeseries();
+							}
+							break;
+						}
+					}
+				})
+			});
+
+			// small multiples OECD
+			function makeOECDSmallMultiples()
+			{
+				var svg = d3.select("#oecdSmallMultiples");
+				var w = +svg.attr('width');
+				var h = +svg.attr('height');
+				
+				var oecdGroups = svg.selectAll('g').data(OECD_PLOTS).enter().append('g')
+					.attr('transform', function(d, i) {
+						return 'translate(' + (Math.floor(i/4)*w/4) + ',' + ((i%4) * (h/4)) + ')';
+					})
+					.each(function(d, i) 
+					{
+						var g = d3.select(this);
+						var plot = new LinePlot(g, w/4-30, h/4-5, {resizable: false, xAxis: false});
+						var timeseries = oecd.getLocationTimeseries(d.country, 'GDP');
+						plot.addTimeseries(timeseries, d.label, d.color);
+						plot.setDateRange([oecd.getStartYear() + '-1-1', oecd.getEndYear() + '-1-1']);
+
+					})
+
+			}
+
+			// ====================================
+			// Carbon Dioxide 
+			var carbonTimeseries = null, carbonPlot;
+			var carbon = new CarbonData('data/carbon.txt', function(carbon) 
+			{
+				carbonTimeseries = carbon.getTimeseries();
+				var svg = d3.select("#linechartCarbon");
+				var w = 550 - 20;
+				var h = +svg.attr('height')-20;
+
+				carbonPlot = new LinePlot(svg, w, h, {stroke_width: 2, interpolate: 'linear'});
+				carbonPlot.addTimeseries(carbonTimeseries, null, '#80d4ff');
+				carbonPlot.setDateRange([carbon.getStartTime(), carbon.getEndTime()]);
+				carbonPlot.setResizeCallback(updateChartInfo);
+
+				// text to show average line segment orientation and aspect ratio
+				var carbonChartInfo = svg.append("text")
+					.attr('x', 5).attr('y', h+35)
+					.style('fill', 'white').style('font-family', 'Source Sans Pro').style('font-size', '20pt');
+				//updateChartInfo(w, h);
+
+				function updateChartInfo(width, height) {
+					var avgAngle = carbonPlot.avgSegmentOrientation(0);
+					var aspectRatio = width / height;
+					carbonChartInfo
+						.attr('y', height+35)
+						.html("Average line segment orientation: " + avgAngle.toFixed(1) + ', Aspect ratio: ' + aspectRatio.toFixed(1));
+				}
+			});
+		</script>
+	</body>
+</html>
