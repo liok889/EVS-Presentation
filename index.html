@@ -93,6 +93,7 @@
 		<script src="lib/vis/cabon.js"></script>
 		<script src="lib/vis/dow.js"></script>
 		<script src="lib/vis/stripes.js"></script>
+		<script src="lib/vis/horizon.js"></script>
 		<script src="lib/vis/helper.js"></script>
 
 		<div class="reveal">
@@ -423,7 +424,7 @@
 						
 							var showNoise = true;
 							var preNoiseSeries = new Timeseries(3000).zero().cosineWave(10, 500, 0).cosineWave(26, 2000, 200).cosineWave(5, 900, 100).cosineWave(15, 200, 50);
-							var noisedSeries = preNoiseSeries.clone().noise([0, 70])
+							var noisedSeries = preNoiseSeries.clone().noise([-50, 50])
 							var cosinePlot = visLinePlot('linechartCosine', noisedSeries, { yAxis: false, xAxis: false, stroke_width: 2, padW: 0 });
 							
 							var canvas2 = d3.select('#canvasCosine');
@@ -442,8 +443,7 @@
 
 				<section>
 					<h2>Horizon chart</h2>
-					<svg width="800" height="200"></svg>
-
+					<svg id="horizonChart" width="1400" height="50" style="border: solid 1px white; background-color: white"></svg>
 				</section>
 			</div>
 		</div>
@@ -684,6 +684,7 @@
 				dowPlot.setDateRange([dow.getStartTime(), dow.getEndTime()]);
 
 				changeDowSmooth(0);
+				drawHorizonChart(dowTimeseriesSmoothed);
 			});
 
 			function changeDowSmooth(delta) {
@@ -716,7 +717,20 @@
 					canvas = d3.select('#' + STRIPE_CHARTS[i].canvas);
 					new StripesPlot(canvas, +canvas.attr('width'), +canvas.attr('height'), dowTimeseriesSmoothed, STRIPE_CHARTS[i].colorScale);
 				}
-			}				
+			}
+
+			// ===================================
+			// Horizon chart
+			// ==================================
+			function drawHorizonChart(timeseries)
+			{
+				var svg = d3.select('#horizonChart');
+				var w = +svg.attr('width');
+				var h = +svg.attr('height');
+
+				var horizon = new HorizonPlot(svg, w, h, timeseries, 4);
+			}
+			
 		</script>
 	</body>
 </html>
