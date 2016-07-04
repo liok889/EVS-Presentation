@@ -94,6 +94,7 @@
 		<script src="lib/vis/dow.js"></script>
 		<script src="lib/vis/stripes.js"></script>
 		<script src="lib/vis/horizon.js"></script>
+		<script src="lib/vis/weather.js"></script>
 		<script src="lib/vis/helper.js"></script>
 
 		<div class="reveal">
@@ -443,7 +444,106 @@
 
 				<section>
 					<h2>Horizon chart</h2>
-					<svg id="horizonChart" width="1600" height="200" style=""><defs></defs></svg>
+					<svg id="horizonChart1" width="1600" height="200" style=""><defs></defs></svg><br>
+					<svg class="fragment" id="horizonChart2" width="1600" height="300" style=""><defs></defs></svg>
+				</section>
+
+				<section>
+					<h2>Temperature anomalies</h2>
+					<svg id="temperatureSVG" width="1500" height="750">
+						<defs></defs>
+					</svg>
+					<div>
+						Data: <a href="http://berkeleyearth.lbl.gov/city-list/">http://berkeleyearth.lbl.gov/city-list/</a>
+					</div>
+					<script type="text/javascript">
+						var WEATHER_CITIES = [
+							{ name: 'Chicago'		, url: 'data/temperature/chicago.txt' 	},
+							{ name: 'NYC'			, url: 'data/temperature/new_york.txt'	},
+							{ name: 'New Delhi'		, url: 'data/temperature/new_delhi.txt'	},
+							{ name: 'Tokyo'			, url: 'data/temperature/tokyo.txt'		},
+							{ name: 'Sao Paulo'		, url: 'data/temperature/sao_paulo.txt'	},
+							{ name: 'Moscow'		, url: 'data/temperature/moscow.txt'	},
+							{ name: 'Baghdad'		, url: 'data/temperature/baghdad.txt'	},
+							{ name: 'Sydney'		, url: 'data/temperature/sydney.txt'	},
+							{ name: 'Los Angeles'	, url: 'data/temperature/los_angeles.txt'},
+							{ name: 'Montreal'		, url: 'data/temperature/montreal.txt'},
+							{ name: 'Brasilia'		, url: 'data/temperature/brasilia.txt'},
+							{ name: 'Rome'			, url: 'data/temperature/rome.txt'},
+							{ name: 'Aleppo'		, url: 'data/temperature/aleppo.txt'},
+							{ name: 'Philadelphia'	, url: 'data/temperature/philly.txt'},
+							{ name: 'Johannesburg'	, url: 'data/temperature/johannesburg.txt'},
+							{ name: 'Mexico City'	, url: 'data/temperature/mexico_city.txt'},
+							{ name: 'Dubai'			, url: 'data/temperature/dubai.txt'},
+							{ name: 'Bangkok'		, url: 'data/temperature/bangkok.txt'},
+							{ name: 'Reykjavik'		, url: 'data/temperature/Reykjavik.txt'},
+							{ name: 'Athens'		, url: 'data/temperature/athens.txt'}
+
+						];
+
+						var weather = new WeatherData(WEATHER_CITIES, function(weather, timeseries) 
+						{
+							for (var i=0, N=WEATHER_CITIES.length; i<N; i++) {
+								WEATHER_CITIES[i].timeseries = timeseries[i].smooth(20, true);
+								WEATHER_CITIES[i].index = i;
+							}
+							var globalExtents = weather.getExtents();
+
+							var HORIZON_W = 1250;
+							var HORIZON_H = 28;
+							var HORIZON_OFFSET_X = 180;
+							var HORIZON_OFFSET_Y = 80;
+							var HORIZON_FONT_SIZE = 22;
+
+							var svg = d3.select('#temperatureSVG')
+								.on('dblclick', function(d, index) 
+								{
+									d3.select(this).selectAll('g.weatherGroup').each(function(d, index) {
+										(function(index, group) 
+										{
+											var delay = 250+50*index;
+											console.log("setting timeout: " + delay + ", for: " + index);
+											setTimeout(function() {
+												group.transition().duration(500).style("fill-opacity", '1.0').style('fill-opacity', '1.0');
+											}, 0 + 130*index);
+										})(index, d3.select(this));
+									});
+								});
+
+							var cityGroup = svg.selectAll('g').data(WEATHER_CITIES).enter().append('g')
+								.attr('class', 'weatherGroup')
+								.attr('transform', function(d, i) { return 'translate(' + HORIZON_OFFSET_X + ',' + (HORIZON_OFFSET_Y+i*(HORIZON_H+2)) + ')';})
+								.each(function(d, index) {
+									if (d.index > 0) {
+										d3.select(this)
+											.style('fill-opacity', 0.0).style('stroke-opacity', 0.0);
+									}
+								})
+
+
+							cityGroup.selectAll('text').data(function(d) { return [d]; }).enter().append('text')
+								.html(function(d) { return d.name; })
+								.style('fill', 'white').style('font-family', 'Source Sans Pro').style('font-size', HORIZON_FONT_SIZE + 'px')
+								.attr('x', -10).attr('y', HORIZON_H/2 + HORIZON_FONT_SIZE/2)
+								.attr('text-anchor', 'end');
+
+							cityGroup.selectAll('g').data(function(d) { return [d]; }).enter().append('g')
+								.attr('class', 'temperatureHorizonPlot')
+								.each(function(d) {
+									var plot = (new HorizonPlot(d3.select(this), HORIZON_W, HORIZON_H, d.timeseries, 4, 0));
+									if (d.index == 0) {
+										plot.colorBands();
+									} else {
+										plot.deploy();
+									}
+									if (d.index == WEATHER_CITIES.length-1) {
+										plot.drawTimeAxis( weather.getStartTime(), weather.getEndTime() );
+									}
+								});
+
+						}, new Date('1850-1-1'), new Date('2013-12-1'));
+
+					</script>
 				</section>
 			</div>
 		</div>
@@ -722,20 +822,44 @@
 			// ===================================
 			// Horizon chart
 			// ==================================
-			var horizonState = 0, horizonDirection = 1;
+			var horizonState = [0,0], horizonDirection = [1,1];
 			function drawHorizonChart(timeseries)
 			{
 				var levels = 4;
-				var svg = d3.select('#horizonChart');
-				var w = +svg.attr('width');
-				var h = +svg.attr('height') / levels;
+				var svg1 = d3.select('#horizonChart1');
+				var svg2 = d3.select('#horizonChart2');
 
-				var group = svg.append("g").attr('transform', 'translate(0,' + (levels-1)*h + ')');
-				var horizon = new HorizonPlot(group, w, h, timeseries, 4);
+				var w = +svg1.attr('width');
+				var h = +svg1.attr('height') / levels;
 
-				svg.on("dblclick", function() {
-					horizonState += horizonDirection;
-					switch (horizonState) {
+				var group1 = svg1.append("g").attr('transform', 'translate(0,' + (levels-1)*h + ')');
+				var horizon1 = new HorizonPlot(group1, w, h, timeseries, 4);
+
+				var group2 = svg2.append("g").attr('transform', 'translate(0,' + (levels-1)*h + ')');
+				var horizon2 = new HorizonPlot(group2, w, h, timeseries, 4, timeseries.calcMean());
+				horizon2.drawTimeAxis(dow.getStartTime(), dow.getEndTime());
+
+				svg1.on("dblclick", horizonDblClick);
+				svg2.on("dblclick", horizonDblClick);
+
+				function horizonDblClick() 
+				{
+					var hState, hDirection, horizon;
+					if (d3.select(this).attr('id') == 'horizonChart1') 
+					{
+						hDirection = horizonDirection[0];
+						hState = horizonState[0];
+						horizon = horizon1;
+					}
+					else
+					{
+						hDirection = horizonDirection[1];
+						hState = horizonState[1];						
+						horizon = horizon2;
+					}
+					hState += hDirection;
+
+					switch (hState) {
 					
 					case 0:
 						horizon.colorBands('rgb(166,189,219)');
@@ -748,12 +872,22 @@
 						break;
 
 					case 3:
-						horizonDirection = 1;
-						horizonState = -1;
+						hDirection = 1;
+						hState = -1;
 						horizon.expandBands();
 						break;
 					}
-				})
+					if (d3.select(this).attr('id') == 'horizonChart1') 
+					{
+						horizonDirection[0] = hDirection;
+						horizonState[0] = hState;
+					}
+					else
+					{
+						horizonDirection[1] = hDirection;
+						horizonState[1] = hState;
+					}
+				}
 			}
 			
 		</script>
