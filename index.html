@@ -331,10 +331,71 @@
 					<img data-src="img/anscomb.png" style="background:none; border:none; box-shadow:none;">
 				</section>
 
+				<section>
+					<div style="text-align: left">
+						<h3>Timeseries</h3>
+						A set of measurements that reflect how a variables changes over time<br>
+						<svg class="fragment" width="700px" height="350px">
+						  <defs>
+						    <marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth" viewBox="0 0 20 20">
+						      <path d="M0,0 L0,6 L9,3 z" fill="#fff" />
+						    </marker>
+						  </defs>
+
+						  <g transform="translate(50,50)">
+							  <g transform="translate(50,0)">
+								  <line x1="50" y1="250" x2="450" y2="250" stroke="#fff" stroke-width="5" marker-end="url(#arrow)"></line>
+								  <line x1="50" y1="250" x2="50" y2="20" stroke="#fff" stroke-width="5" marker-end="url(#arrow)"></line>
+						  		  <text x="410" y="290" style="font-family: Helvetica; font-size: 30px; fill: white">Time</text> 
+						  	  	  
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="70"  cy="120"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="90"  cy="130"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="110" cy="120"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="130" cy="110"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="150" cy="115"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="170" cy="100"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="190" cy="80"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="210" cy="70"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="230" cy="60"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="250" cy="87"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="270" cy="105"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="290" cy="80"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="310" cy="110"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="330" cy="130"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="350" cy="110"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="370" cy="105"/>
+						  	  	  <circle style="fill: #99ccff; stroke: white" r="10" cx="390" cy="115"/>
+
+						  	  </g>
+						  	  <text transform="translate(70,210) rotate(-90)" style="font-family: Helvetica; font-size: 30px; fill: white">Temperature</text> 
+						  </g>
+						</svg>
+
+						<div class="fragment">
+							<pre><code>
+temprature = [ 15.0, 15.5, 15.1, 14.7, 16.3, 18.7, 19.8, 20.3, 19.5, 16.9, 18.1, 16.1, 14.1, 15.5 ]
+humidity   = [ 60.1, 67.1, 62.0, 54.0, 51.8, 61.3, 64.9, 65.5, 63.0, 60.1, 57.2, 51.0, 55.0, 54.1 ]
+pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15, 1.12, 1.14, 1.12 ]
+     .
+     .
+     .
+						</code></pre></div>
+						<div class="fragment">
+						<h3>Visual analytic tasks</h3>
+						<ul>
+							<li>Compare values at different points in time</li>
+							<li>Detect trends in one variable</li>
+							<li>Understand associations between two or more variables over time</li>
+						</ul>
+
+				</div>
+				</section>
+
+
 				<!-- visualizing times series -->
 				<section>
-					<div>
-						<h4 style="text-align: left">Visual representations<br>for time series</h4>
+					<div style="text-align: left">
+						<h4>Visual representations<br>for time series</h4><br>
 						<ul>
 							<li class="fragment">Line charts</li>
 							<li class="fragment">Stripe glyphs</li>
@@ -357,7 +418,7 @@
 
 				<section>
 					<div style="">
-						<svg id="linechartOECD" width="1100" height="500"></svg><br>
+						<svg id="linechartOECD" width="1100" height="550"></svg><br>
 						Gross Domestic Product (USD per capita)
 					</div>
 
@@ -380,6 +441,18 @@
 
 					</div>
 
+				</section>
+
+				<section>
+					<h2>Multi-scale views</h2>
+					<img src="img/kronominer.png"><br>
+					<font style="font-size: 14pt">Zhao et al. <b>KronoMiner</b>: Using Multi-Foci Navigation for the Visual Exploration of Time-Series Data. CHI'11</font>
+				</section>
+
+				<section>
+					<h2>Multi-scale views</h2>
+					<img src="img/stackzooming.png"><br>
+					<font style="font-size: 14pt">Waqas and Elmqvist. Stack Zooming for multi-focus interaction in time-series data visualization</font>
 				</section>
 
 				<!-- stripes -->
@@ -441,58 +514,76 @@
 					</script>
 				</section>
 
+				<section data-transition="none" data-background-transition="none">
+					<h2>Stripe chart</h2>
+						Electropherograms (112 Wheat strains)<br>
+						<img src="img/stripe_wheat1.png">
+						<br><font style="font-size: 14pt">Kincaid and Lam. Line Graph Explorer: Scalable Display of Line Graphs Using Focus+Context, AVI'06</font>
+
+				</section>
+				<section data-transition="none" data-background-transition="none">
+						<h2>Stripe chart</h2>
+						Electropherograms (112 Wheat strains)<br>
+						<img src="img/stripe_wheat2.png">
+						<br><font style="font-size: 14pt">Kincaid and Lam. Line Graph Explorer: Scalable Display of Line Graphs Using Focus+Context, AVI'06</font>
+
+				</section>
 
 				<section>
 					<h2>Horizon chart</h2>
-					<svg id="horizonChart1" width="1600" height="200" style=""><defs></defs></svg><br>
+					<svg class="fragment" id="horizonChart1" width="1600" height="300" style=""><defs></defs></svg><br>
 					<svg class="fragment" id="horizonChart2" width="1600" height="300" style=""><defs></defs></svg>
 				</section>
 
 				<section>
 					<h2>Temperature anomalies</h2>
-					<svg id="temperatureSVG" width="1500" height="750">
+					<svg id="temperatureSVG" width="1700" height="755">
 						<defs></defs>
 					</svg>
 					<div>
-						Data: <a href="http://berkeleyearth.lbl.gov/city-list/">http://berkeleyearth.lbl.gov/city-list/</a>
+						<font style="font-size: 14pt">Data: <a href="http://berkeleyearth.lbl.gov/city-list/">http://berkeleyearth.lbl.gov/city-list/</a></font>
 					</div>
 					<script type="text/javascript">
 						var WEATHER_CITIES = [
 							{ name: 'Chicago'		, url: 'data/temperature/chicago.txt' 	},
-							{ name: 'NYC'			, url: 'data/temperature/new_york.txt'	},
-							{ name: 'New Delhi'		, url: 'data/temperature/new_delhi.txt'	},
-							{ name: 'Tokyo'			, url: 'data/temperature/tokyo.txt'		},
-							{ name: 'Sao Paulo'		, url: 'data/temperature/sao_paulo.txt'	},
-							{ name: 'Moscow'		, url: 'data/temperature/moscow.txt'	},
-							{ name: 'Baghdad'		, url: 'data/temperature/baghdad.txt'	},
-							{ name: 'Sydney'		, url: 'data/temperature/sydney.txt'	},
 							{ name: 'Los Angeles'	, url: 'data/temperature/los_angeles.txt'},
-							{ name: 'Montreal'		, url: 'data/temperature/montreal.txt'},
-							{ name: 'Brasilia'		, url: 'data/temperature/brasilia.txt'},
-							{ name: 'Rome'			, url: 'data/temperature/rome.txt'},
-							{ name: 'Aleppo'		, url: 'data/temperature/aleppo.txt'},
 							{ name: 'Philadelphia'	, url: 'data/temperature/philly.txt'},
-							{ name: 'Johannesburg'	, url: 'data/temperature/johannesburg.txt'},
-							{ name: 'Mexico City'	, url: 'data/temperature/mexico_city.txt'},
-							{ name: 'Dubai'			, url: 'data/temperature/dubai.txt'},
-							{ name: 'Bangkok'		, url: 'data/temperature/bangkok.txt'},
+							{ name: 'NYC'			, url: 'data/temperature/new_york.txt'	},
+							{ name: 'Montreal'		, url: 'data/temperature/montreal.txt'},
+							{ name: 'Anchorage'		, url: 'data/temperature/anchorage.txt'},
 							{ name: 'Reykjavik'		, url: 'data/temperature/Reykjavik.txt'},
-							{ name: 'Athens'		, url: 'data/temperature/athens.txt'}
+							{ name: 'Sao Paulo'		, url: 'data/temperature/sao_paulo.txt'	},
+							{ name: 'Brasilia'		, url: 'data/temperature/brasilia.txt'},
+							{ name: 'Johannesburg'	, url: 'data/temperature/johannesburg.txt'},
+						
+							{ name: 'Athens'		, url: 'data/temperature/athens.txt'},
+							{ name: 'Mexico City'	, url: 'data/temperature/mexico_city.txt'},
+							{ name: 'Rome'			, url: 'data/temperature/rome.txt'},
+							{ name: 'Dubai'			, url: 'data/temperature/dubai.txt'},
+							{ name: 'Baghdad'		, url: 'data/temperature/baghdad.txt'	},
+							{ name: 'Aleppo'		, url: 'data/temperature/aleppo.txt'},
+
+							{ name: 'New Delhi'		, url: 'data/temperature/new_delhi.txt'	},
+							{ name: 'Moscow'		, url: 'data/temperature/moscow.txt'	},
+
+							{ name: 'Tokyo'			, url: 'data/temperature/tokyo.txt'		},
+							{ name: 'Sydney'		, url: 'data/temperature/sydney.txt'	},
+							{ name: 'Bangkok'		, url: 'data/temperature/bangkok.txt'}
 
 						];
 
 						var weather = new WeatherData(WEATHER_CITIES, function(weather, timeseries) 
 						{
 							for (var i=0, N=WEATHER_CITIES.length; i<N; i++) {
-								WEATHER_CITIES[i].timeseries = timeseries[i].smooth(20, true);
+								WEATHER_CITIES[i].timeseries = timeseries[i].smooth(30, true);
 								WEATHER_CITIES[i].index = i;
 							}
 							var globalExtents = weather.getExtents();
 
-							var HORIZON_W = 1250;
+							var HORIZON_W = 1550;
 							var HORIZON_H = 28;
 							var HORIZON_OFFSET_X = 180;
-							var HORIZON_OFFSET_Y = 80;
+							var HORIZON_OFFSET_Y = 105;
 							var HORIZON_FONT_SIZE = 22;
 
 							var svg = d3.select('#temperatureSVG')
@@ -504,7 +595,7 @@
 											var delay = 250+50*index;
 											console.log("setting timeout: " + delay + ", for: " + index);
 											setTimeout(function() {
-												group.transition().duration(500).style("fill-opacity", '1.0').style('fill-opacity', '1.0');
+												group.transition().duration(600).style("fill-opacity", '1.0').style('fill-opacity', '1.0');
 											}, 0 + 130*index);
 										})(index, d3.select(this));
 									});
@@ -530,7 +621,7 @@
 							cityGroup.selectAll('g').data(function(d) { return [d]; }).enter().append('g')
 								.attr('class', 'temperatureHorizonPlot')
 								.each(function(d) {
-									var plot = (new HorizonPlot(d3.select(this), HORIZON_W, HORIZON_H, d.timeseries, 4, 0));
+									var plot = (new HorizonPlot(d3.select(this), HORIZON_W, HORIZON_H, d.timeseries, 5, 0));
 									if (d.index == 0) {
 										plot.colorBands();
 									} else {
@@ -545,6 +636,42 @@
 
 					</script>
 				</section>
+
+				<section>
+					<h3>Perception of the Horizon Chart</h3>
+					<img class="fragment" src="img/horizon_heer.png"><br>
+				</section>
+
+				<section>
+					<h3>Perception of the Horizon Chart</h3>
+					<img class="fragment" width="600" src="img/heer_line_chart_v_horizon.png"><br>
+					<img class="fragment" width="600" src="img/horizon_v_line_time.png">
+				</section>				
+				
+				<section>
+					<h3>Perception of the Horizon Chart</h3>
+					<img class="fragment" src="img/heer_estimation_error.png"><br>
+					<img class="fragment" src="img/heer_estimation_time.png">
+				</section>
+
+				<section>
+					<div style="text-align: left">
+						<h3>Horizon vs. Line chart</h3>
+						<ul>
+							<li class="fragment">A 2-band horizon chart is more accurate than a standard line chart</li>
+							<li class="fragment">Horizon charts take more time to "read" than traditional line charts</li>
+							<li class="fragment">Increasing the number of bands decreases estimation accuracy</li>
+							<li class="fragment">The ability to see more time series may outweigh the loss of accuracy</li>
+						</ul>
+					</div>
+				</section>
+
+				<section>
+					<img src="img/waqas_perception.png">
+				</section>
+
+
+
 			</div>
 		</div>
 		
@@ -572,7 +699,7 @@
 
 			// load OCED data
 			var svg = d3.select("#linechartOECD");
-			var w = +svg.attr("width")-40;
+			var w = +svg.attr("width")-70;
 			var h = +svg.attr('height');
 			var plot = new LinePlot(svg, w, h);
 			var OECD_PLOTS = [
@@ -613,7 +740,7 @@
 
 					switch (Reveal.getIndices().h)
 					{ 
-					case 7:
+					case 8:
 					
 						if (keyCode == 65) {
 							if (OECD_INDEX < OECD_PLOTS.length) 
@@ -638,7 +765,7 @@
 						}
 						break;
 
-					case 9:
+					case 10:
 						switch(d3.event.keyCode)
 						{
 						case 65:
@@ -654,7 +781,7 @@
 							break;
 						}
 					
-					case 10:
+					case 13:
 						// Dow smooth
 						switch (d3.event.keyCode)
 						{
@@ -825,17 +952,18 @@
 			var horizonState = [0,0], horizonDirection = [1,1];
 			function drawHorizonChart(timeseries)
 			{
-				var levels = 4;
+				var levels = 5;
 				var svg1 = d3.select('#horizonChart1');
 				var svg2 = d3.select('#horizonChart2');
 
 				var w = +svg1.attr('width');
-				var h = +svg1.attr('height') / levels;
+				var h = (+svg1.attr('height')-30) / levels;
 
-				var group1 = svg1.append("g").attr('transform', 'translate(0,' + (levels-1)*h + ')');
+				var group1 = svg1.append("g").attr('transform', 'translate(0,' + ((levels-1)*h-30) + ')');
 				var horizon1 = new HorizonPlot(group1, w, h, timeseries, 4);
+				horizon1.drawTimeAxis(dow.getStartTime(), dow.getEndTime());
 
-				var group2 = svg2.append("g").attr('transform', 'translate(0,' + (levels-1)*h + ')');
+				var group2 = svg2.append("g").attr('transform', 'translate(0,' + ((levels-1)*h-30) + ')');
 				var horizon2 = new HorizonPlot(group2, w, h, timeseries, 4, timeseries.calcMean());
 				horizon2.drawTimeAxis(dow.getStartTime(), dow.getEndTime());
 
