@@ -395,11 +395,11 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 				<!-- visualizing times series -->
 				<section>
 					<div style="text-align: left">
-						<h4>Visual representations<br>for time series</h4><br>
+						<h2>Visual representations<br>for time series</h2><br>
 						<ul>
 							<li class="fragment">Line charts</li>
 							<li class="fragment">Stripe glyphs</li>
-							<li class="fragment">Star glyphs and radial layouts</li>
+							<!--<li class="fragment">Star glyphs and radial layouts</li>-->
 							<li class="fragment">Interactive techniques</li>
 							<li class="fragment">Scatterplots</li>
 						</ul>
@@ -595,8 +595,8 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 											var delay = 250+50*index;
 											console.log("setting timeout: " + delay + ", for: " + index);
 											setTimeout(function() {
-												group.transition().duration(600).style("fill-opacity", '1.0').style('fill-opacity', '1.0');
-											}, 0 + 130*index);
+												group.transition().duration(1500).style("fill-opacity", '1.0').style('fill-opacity', '1.0');
+											}, 0 + 130*1);
 										})(index, d3.select(this));
 									});
 								});
@@ -670,7 +670,37 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 					<img src="img/waqas_perception.png">
 				</section>
 
+				<section>
+					<img width="1500" src="img/waqas_perception_chart_type.png"><br>
+					<img class="fragment" src="img/perception.svg" style="background-color: rgba(0,0,0,0.0); border: 0">
+				</section>
 
+				<section>
+					<div style="text-align: left">
+						<h3>Comparison of multiple time series</h3>
+						<ul>
+							<li class="fragment">If the analysis requires comparison across a large visual span, use <i>small-multiples</i> or <i>horizon plots</i></li>
+							<li class="fragment">If task requires local comparisons within a short visual span, use <i>simple line</i> or <i>braided charts</i></li>
+							<li class="fragment">Small multiples is generally a good choice for intuitiveness and speed</li>
+						</ul>
+					</div>
+				</section>
+
+				<section>
+					<h3>Scatterplots</h3>
+					<svg class="fragment" id="svgScatter" width="1400" height="1200"></svg>
+					<script type="text/javascript">
+						makeTimeSeries(d3.select('#svgScatter'));
+					</script>
+				</section>
+				
+				<section>
+					<h3>Scatterplots</h3>
+					<svg id="svgScatter2" width="1400" height="1200"></svg>
+					<script type="text/javascript">
+						makeTimeSeries(d3.select('#svgScatter2'), 2, 2000);
+					</script>
+				</section>
 
 			</div>
 		</div>
