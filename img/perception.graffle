@@ -1137,7 +1137,7 @@ chart}</string>
 			</dict>
 		</array>
 		<key>Frame</key>
-		<string>{{547, 211}, {1302, 846}}</string>
+		<string>{{224, 97}, {1302, 846}}</string>
 		<key>ListView</key>
 		<true/>
 		<key>OutlineWidth</key>

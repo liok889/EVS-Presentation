@@ -67,7 +67,13 @@
 			  padding: 0.2em 0.5em 0.2em 0.5em;
 			  border-bottom: 1px solid;
 			}
-
+		
+			.brush .extent {
+				stroke: #fff;
+				fill: #fff;
+				fill-opacity: .225;
+				shape-rendering: crispEdges;
+			}
 
 		</style>
 
@@ -333,7 +339,7 @@
 
 				<section>
 					<div style="text-align: left">
-						<h3>Timeseries</h3>
+						<h3>Time series</h3>
 						A set of measurements that reflect how a variables changes over time<br>
 						<svg class="fragment" width="700px" height="350px">
 						  <defs>
@@ -373,9 +379,9 @@
 
 						<div class="fragment">
 							<pre><code>
-temprature = [ 15.0, 15.5, 15.1, 14.7, 16.3, 18.7, 19.8, 20.3, 19.5, 16.9, 18.1, 16.1, 14.1, 15.5 ]
-humidity   = [ 60.1, 67.1, 62.0, 54.0, 51.8, 61.3, 64.9, 65.5, 63.0, 60.1, 57.2, 51.0, 55.0, 54.1 ]
-pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15, 1.12, 1.14, 1.12 ]
+temperature = [ 15.0, 15.5, 15.1, 14.7, 16.3, 18.7, 19.8, 20.3, 19.5, 16.9, 18.1, 16.1, 14.1, 15.5 ]
+humidity    = [ 60.1, 67.1, 62.0, 54.0, 51.8, 61.3, 64.9, 65.5, 63.0, 60.1, 57.2, 51.0, 55.0, 54.1 ]
+pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15, 1.12, 1.14, 1.12 ]
      .
      .
      .
@@ -413,6 +419,7 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 				</section>
 
 				<section data-background-color="white">
+					<!--<img data-src="img/playfair.jpg" style="background:none; border:none; box-shadow:none;"><br>-->
 					<img data-src="img/Playfair_Timeseries.png" style="background:none; border:none; box-shadow:none;">
 				</section>
 
@@ -431,16 +438,23 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 				<section>
 					<div style="text-align: left">
 						<h3>Aspect ratio matters</h3>
-						The average absolute orientation of line segments should be close to 45&#176;
 					</div>
 					<div class="fragment" style="text-align: left">
 							Atmospheric Carbon Dioxide
 							<svg id="linechartCarbon" width="1350" height="700"></svg><br>
 					</div>
-					<div class="fragment">
-
+					<div class="fragment" style="text-align: left">
+						Average absolute orientation of line segments should be close to 45&#176; for better perception
 					</div>
 
+				</section>
+
+				<section>
+					<h2>Multi-scale views</h2>
+					<div class="fragment">
+						Chicago temperature anomalies<br>
+						<svg id="svgMultiscale" width="1500" height="900"></svg>
+					</div>
 				</section>
 
 				<section>
@@ -575,7 +589,9 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 						var weather = new WeatherData(WEATHER_CITIES, function(weather, timeseries) 
 						{
 							for (var i=0, N=WEATHER_CITIES.length; i<N; i++) {
-								WEATHER_CITIES[i].timeseries = timeseries[i].smooth(30, true);
+								WEATHER_CITIES[i].timeseries = timeseries[i].clone().smooth(30, true);
+								WEATHER_CITIES[i].lessSmoothedTimeseries = timeseries[i].clone().smooth(3, true);
+
 								WEATHER_CITIES[i].index = i;
 							}
 							var globalExtents = weather.getExtents();
@@ -585,6 +601,18 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 							var HORIZON_OFFSET_X = 180;
 							var HORIZON_OFFSET_Y = 105;
 							var HORIZON_FONT_SIZE = 22;
+
+							// draw a multiscale diagram
+							drawMultiscale([
+								{
+									timeseries: WEATHER_CITIES[0].lessSmoothedTimeseries,
+									color: '#80d4ff'
+								},
+								{
+									timeseries: WEATHER_CITIES[0].timeseries,
+									color: '#ffcc99'
+								}
+							], weather.getStartTime(), weather.getEndTime());
 
 							var svg = d3.select('#temperatureSVG')
 								.on('dblclick', function(d, index) 
@@ -826,7 +854,7 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 						}
 						break;
 
-					case 8:
+					case 9:
 						if (keyCode == 89)
 						{
 							flipOECDYRange();
@@ -849,7 +877,7 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 							break;
 						}
 					
-					case 13:
+					case 14:
 						// Dow smooth
 						switch (d3.event.keyCode)
 						{
@@ -1011,6 +1039,33 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 				for (var i=0; i < STRIPE_CHARTS.length; i++) {
 					canvas = d3.select('#' + STRIPE_CHARTS[i].canvas);
 					new StripesPlot(canvas, +canvas.attr('width'), +canvas.attr('height'), dowTimeseriesSmoothed, STRIPE_CHARTS[i].colorScale);
+				}
+			}
+
+			function drawMultiscale(timeseries, startTime, endTime)
+			{
+				var svg = d3.select("#svgMultiscale");
+				var w = +svg.attr('width');
+				var group = svg.append('g').attr('transform', 'translate(0,0)');
+				var multiscaleDow = new LinePlot(group, w, 200, {
+					multiscale: true,
+					yAxis: true,
+					xAxis: true,
+					padW: 20,
+					stroke_width: 3,
+					interpolate: 'linear'
+				});
+				if (startTime && endTime) {
+					multiscaleDow.setDateRange([startTime, endTime]);
+				}
+				if (Array.isArray(timeseries))
+				{
+					for (var i=0, N=timeseries.length; i<N; i++) {
+						multiscaleDow.addTimeseries( timeseries[i].timeseries, null, timeseries[i].color || '#80d4ff' );
+					}
+				}
+				else {
+					multiscaleDow.addTimeseries( timeseries, null, '#80d4ff' );
 				}
 			}
 
