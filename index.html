@@ -690,7 +690,45 @@ pressire   = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15,
 					<h3>Scatterplots</h3>
 					<svg class="fragment" id="svgScatter" width="1400" height="1200"></svg>
 					<script type="text/javascript">
-						makeTimeSeries(d3.select('#svgScatter'));
+						makeTimeSeries(d3.select('#svgScatter'), null, null, null, null);
+						d3.select('#svgScatter').on('click', function() {
+							if (d3.select(this).select('g.scatterPlotGroup').size() > 0) {
+
+								d3.select(this).selectAll('*').remove();
+								var series = makeTimeSeries(d3.select('#svgScatter'), null, null, null, null, true);
+
+								// run correlation analysis between the two
+								var reg = linearRegression(makeCombinedSeries(series[0], series[1]));
+								console.log("reg M: " + reg.m + ", b: " + reg.b + ", R: " + reg.r);
+
+								// draw line
+								var p0 = {
+									x: 0,
+									y: reg.m * 0 + reg.b
+								};
+								var p1 = {
+									x: 1,
+									y: reg.m * 1 + reg.b
+								};
+								var scatterScale = d3.scale.linear().domain([0, 1]).range([SCATTER_PAD, SCATTER_W-2*SCATTER_PAD]);
+								d3.select(this).select('g.scatterPlotGroup').selectAll('line.regressionLine')
+									.data([{ p0: p0, p1: p1 }]).enter().append('line')
+									.attr('class', 'regressionLine')
+									.style('stroke', '#ff9999')
+									.style('stroke-width', '5px')
+									.attr('x1', function(d) { return scatterScale(d.p0.x) })
+									.attr('y1', function(d) { return scatterScale(d.p0.y) })
+									.attr('x2', function(d) { return scatterScale(d.p1.x) })
+									.attr('y2', function(d) { return scatterScale(d.p1.y) });
+								d3.select(this).select('g.scatterPlotGroup')
+									.append('text')
+									.attr('x', SCATTER_W+20)
+									.attr('y', SCATTER_W/2)
+									.style("fill", 'white')
+									.style('font-family', 'Source Sans Pro').style('font-size', '20pt')
+									.html('R2 = ' + Math.pow(reg.r, 2).toFixed(2));
+							}
+						});
 					</script>
 				</section>
 				
