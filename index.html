@@ -23,6 +23,14 @@
 				cursor: default;
 			}
 
+			#tempoDIV {
+				background-image: url("img/tempo.png");
+				width: 1600px;
+				height: 1000px;
+				background-repeat: no-repeat;
+				background-position: center
+			}
+
 			td { border-bottom: solid 2px white; font-family: "Monaco", "Lucida Console", monospace;}
 			td.centerCell {border-left: solid 2px white; border-bottom: solid 2px white; font-family: "Monaco", "Lucida Console", monospace;}
 			
@@ -108,7 +116,7 @@
 				
 				<!-- intro slide -->
 				<section data-background-image="img/pianoStrings.png">
-					<div style="background-color: rgba(0,0,0,0.4); width: 600px; text-align: left">
+					<div style="background-color: rgba(0,0,0,0.6); width: 600px; text-align: center">
 						<h1>Visualizing<br>Time Series</h1>
 						<!--
 						<p>&nbsp;
@@ -116,14 +124,29 @@
 							Khairi Reda<br>
 							Leadership Computing Facility
 						-->
+						<p>&nbsp;<p>
+						<h3>Khairi Reda</h3>
+						<!--<a href="http://vis.ninja/">http://vis.ninja</a><br>-->
+						<a href="mailto:redak@iu.edu"><span style="color: #ff9999">redak@iu.edu</span></a><br>
+						<a href="http://twitter.com/RedKhair"><span style="color: #ff9999">@RedKhair</span></a>
+
 					</div>
 				</section>
 
+				
 				<section>
-					<h2>Khairi Reda</h2>
-					<!--<a href="http://vis.ninja/">http://vis.ninja</a><br>-->
-					<a href="mailto:redak@iu.edu">redak@iu.edu</a><br>
-					<a href="http://twitter.com/RedKhair">@RedKhair</a>
+					<h2>Visual representations of<br>time series</h2><p>&nbsp;
+					<ul>
+						<li class="fragment">The familiar: line charts, scatterplots</li>
+						<li class="fragment">The not so familiar: stripe, and horizon graphs</li>
+						<li class="fragment">Interaction techniques</li>
+						<li class="fragment">Graphical perception of times series</li>
+						<li class="fragment">Tempo: faceted visualization of time series</li>
+					</ul>
+					<!--<font size="30">
+						why bother with visual analysis?
+					</font>
+					-->
 				</section>
 
 				<!-- why need vis: anscombe's quatret -->
@@ -337,10 +360,25 @@
 					<img data-src="img/anscomb.png" style="background:none; border:none; box-shadow:none;">
 				</section>
 
+
+<section data-background-color="black">
+					<iframe class="stretch" data-src="https://earth.nullschool.net/#current/chem/surface/level/overlay=co2sc/orthographic=-102.78,18.62,616"></iframe>
+				</section>
+
+				<section data-background-image="img/nature-forest-trees-fog.jpeg">
+				</section>
+
+				<section>
+					<img data-src="img/species.jpg">
+				</section>
+
+				<section data-background-image="img/corn.jpg">
+				</section>
+
 				<section>
 					<div style="text-align: left">
-						<h3>Time series</h3>
-						A set of measurements that reflect how a variables changes over time<br>
+						<h3>Eco-Spec Time series</h3>
+						<!--A sequence of measurements that reflect how a variables changes over time<br>-->
 						<svg class="fragment" width="700px" height="350px">
 						  <defs>
 						    <marker id="arrow" markerWidth="10" markerHeight="10" refx="0" refy="3" orient="auto" markerUnits="strokeWidth" viewBox="0 0 20 20">
@@ -378,27 +416,41 @@
 						</svg>
 
 						<div class="fragment">
-							<pre><code>
-temperature = [ 15.0, 15.5, 15.1, 14.7, 16.3, 18.7, 19.8, 20.3, 19.5, 16.9, 18.1, 16.1, 14.1, 15.5 ]
-humidity    = [ 60.1, 67.1, 62.0, 54.0, 51.8, 61.3, 64.9, 65.5, 63.0, 60.1, 57.2, 51.0, 55.0, 54.1 ]
-pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15, 1.12, 1.14, 1.12 ]
-     .
-     .
-     .
-						</code></pre></div>
-						<div class="fragment">
-						<h3>Visual analytic tasks</h3>
-						<ul>
-							<li>Compare values at different points in time</li>
-							<li>Detect trends in one variable</li>
-							<li>Understand associations between two or more variables over time</li>
-						</ul>
+							Environmental variables and flux measurements
+							<pre><code>air temperature = [ 15.0, 15.5, 15.1, 14.7, 16.3, 18.7, 19.8, 20.3, 19.5, 16.9, 18.1, 16.1, 14.1, 15.5, ... ]
+rel. humidity   = [ 60.1, 67.1, 62.0, 54.0, 51.8, 61.3, 64.9, 65.5, 63.0, 60.1, 57.2, 51.0, 55.0, 54.1, ... ]
+carbon flux     = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15, 1.12, 1.14, 1.12, ... ]
+     ...</code></pre></div>
 
-				</div>
+						<div class="fragment">
+							Hyperspectal optical indices
+							<pre><code>NDVI          = [ 0.06, 0.05, 0.07, 0.09, 0.07, 0.05, 0.07, 0.09, 0.06, 0.05, 0.05, 0.06, 0.06, 0.05, ... ]
+RENDVI        = [ 0.09, 0.10, 0.12, 0.10, 0.11, 0.12, 0.12, 0.11, 0.09, 0.13, 0.09, 0.09, 0.10, 0.09, ... ]
+CI            = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15, 1.12, 1.14, 1.12, ... ]
+     ...</code></pre></div>
+
+						<div class="fragment">
+						<h3>Analytical tasks</h3>
+						<ul>
+							<li>Understand association between hyperspectral reflectance and plant physiological processes</li>
+							<li>Analyze the above relationships  at different seasonal and diurnal phases</li>
+							<li>Develop models to predict carbon flux based on optical indices</li>
+						</ul>
+						</div>
+						<p>
+						<h3 class="fragment" style="color: #ff8080">Analyze relationships between multiple time series</h3> 
+					</div>
 				</section>
 
 
+				<!--
+				<section data-background-color="black"> 
+					<iframe class="stretch" data-src="https://earth.nullschool.net/#current/wind/surface/level/overlay=temp/orthographic=-102.78,18.62,616"></iframe>
+				</section>
+				-->
+
 				<!-- visualizing times series -->
+				<!--
 				<section>
 					<div style="text-align: left">
 						<h2>Visual representations<br>for time series</h2><br>
@@ -413,15 +465,19 @@ pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15
 
 					</div>
 				</section>
+				-->
  
 				<!-- line charts -->
 				<section>
-					<h2>Line charts</h2>
+					<h2>Time series<br>visualization<h2>
+					<p>&nbsp;
+					<h2 class="fragment">Line charts</h2>
 				</section>
 
 				<section data-background-color="white">
 					<!--<img data-src="img/playfair.jpg" style="background:none; border:none; box-shadow:none;"><br>-->
 					<img data-src="img/Playfair_Timeseries.png" style="background:none; border:none; box-shadow:none;">
+					<div style="color: black">William Playfair. Commercial and Political Atlas, 1786</div>
 				</section>
 
 				<section>
@@ -433,7 +489,10 @@ pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15
 				</section>
 
 				<section>
-					<svg id="oecdSmallMultiples" width="1800" height="1000"></svg>
+					<h3>Small multiples</h3>
+					<div style="text-align:left">
+						<svg id="oecdSmallMultiples" width="1800" height="1000"></svg>
+					</div>
 				</section>
 
 				<section>
@@ -461,14 +520,20 @@ pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15
 
 				<section>
 					<h2>Multi-scale views</h2>
-					<img src="img/stackzooming.png"><br>
+					<img data-src="img/stackzooming.png"><br>
 					<font style="font-size: 14pt">Waqas and Elmqvist. Stack Zooming for multi-focus interaction in time-series data visualization</font>
 				</section>
 
+				<section>
+					<h2>Lenses</h2>
+					<img data-src="img/chronolens.png"><br>
+					<font style="font-size: 14pt">Zhao et al. Exploratory Analysis of Time-Series with ChronoLenses</b>. Transactions on Visualization and Computer Graphics 17(12), pp. 2422-2431, 2011</font>
+
+				</section>
 
 				<section>
 					<h2>Multi-scale views</h2>
-					<img src="img/kronominer.png"><br>
+					<img data-src="img/kronominer.png"><br>
 					<font style="font-size: 14pt">Zhao et al. <b>KronoMiner</b>: Using Multi-Foci Navigation for the Visual Exploration of Time-Series Data. CHI'11</font>
 				</section>
 
@@ -671,18 +736,18 @@ pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15
 				</section>
 
 				<section>
-					<h3>Perception of the Horizon Chart</h3>
+					<h3>Graphical perception of Horizon Charts</h3>
 					<img class="fragment" src="img/horizon_heer.png"><br>
 				</section>
 
 				<section>
-					<h3>Perception of the Horizon Chart</h3>
+					<h3>Graphical perception of Horizon Charts</h3>
 					<img class="fragment" width="600" src="img/heer_line_chart_v_horizon.png"><br>
 					<img class="fragment" width="600" src="img/horizon_v_line_time.png">
 				</section>				
 				
 				<section>
-					<h3>Perception of the Horizon Chart</h3>
+					<h3>Graphical perception of Horizon Charts</h3>
 					<img class="fragment" src="img/heer_estimation_error.png"><br>
 					<img class="fragment" src="img/heer_estimation_time.png">
 				</section>
@@ -773,6 +838,58 @@ pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15
 					</script>
 				</section>
 
+				<section>
+					<h3>Animated scatterplots</h3>
+					<img class="fragment" data-src="img/rosling.jpg"><br>
+					<img class="fragment" data-src="img/gapminder.gif">
+				</section>
+
+				<section>
+					<h3>Connected scatterplots</h3>
+				</section>
+
+				<section data-background-color="white">
+					<iframe class="stretch" data-src="http://www.nytimes.com/interactive/2013/10/09/us/yellen-fed-chart.html"></iframe>
+				</section>					
+
+				<section data-background-color="black"></section>
+				
+				<section data-background-color="black">
+					<div style="text-align: center">
+					<div id="tempoDIV" style="">
+					<div class="fragment" style="background-color: rgba(0,0,0,0.75); text-align: center; position: relative; top: 300px; padding-top: 50px; padding-bottom: 50px">
+						<h2>Tempo</h2>
+						<ul>
+							<li class="fragment">Web-based tool for visualizing time series</li>
+							<li class="fragment">Show diurnal and seasonal associations between variables</li> 
+							<li class="fragment">Combine scatterplots and line charts</li>
+							<li class="fragment">Faceted views to limit visual clutter and stratify data temporally</li>
+						</ul>
+					</div>
+					</div>
+					</div>
+				</section>
+
+				<section>
+					<h3>Demo</h3>
+				</section>
+
+				<section>
+					<h2>Future work</h2>
+					<ul>
+						<li class="fragment">Automatic classification / ordering of views based on shape-characteristics of scatterplots</li>
+						<li class="fragment">Provide mechanisms to load larger datasets</li>
+						<li class="fragment">Improve interactions</li>
+
+					</ul>
+				</section>
+
+				<section data-background-color="white">
+					<h1>Acknowledgments</h1><br>
+					<img src="img/doe-logo.png" width="500">
+					<h3>EVS: Yuki Hamada, Paul Tarpey</h3>
+					<h3>ALCF: Mike Papka, Tom Marrinan</h3>
+				</section>
 			</div>
 		</div>
 		
@@ -783,9 +900,11 @@ pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15
 		<script>
 			// More info https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
+				previewLinks: false,
 				history: true,
 			    width: 1600,
 			    height: 1200,
+ 				mouseWheel: false,
 				// More info https://github.com/hakimel/reveal.js#dependencies
 				dependencies: [
 					{ src: 'plugin/markdown/marked.js' },
@@ -841,7 +960,7 @@ pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15
 
 					switch (Reveal.getIndices().h)
 					{ 
-					case 8:
+					case 11:
 					
 						if (keyCode == 65) {
 							if (OECD_INDEX < OECD_PLOTS.length) 
@@ -859,14 +978,14 @@ pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15
 						}
 						break;
 
-					case 9:
+					case 12:
 						if (keyCode == 89)
 						{
 							flipOECDYRange();
 						}
 						break;
 
-					case 10:
+					case 13:
 						switch(d3.event.keyCode)
 						{
 						case 65:
@@ -882,7 +1001,7 @@ pressure    = [ 1.11, 1.22, 1.14, 1.15, 1.44, 1.21, 1.31, 1.12, 1.11, 1.12, 1.15
 							break;
 						}
 					
-					case 14:
+					case 18:
 						// Dow smooth
 						switch (d3.event.keyCode)
 						{
